@@ -2,23 +2,16 @@
 import { GoogleGenAI } from "@google/genai";
 
 export class GeminiService {
-  private ai: GoogleGenAI | null = null;
-
-  private getApiKey(): string {
-    return (window as any).process?.env?.API_KEY || (process?.env?.API_KEY) || "";
-  }
-
-  private initAI() {
-    if (!this.ai) {
-      const apiKey = this.getApiKey();
-      this.ai = new GoogleGenAI({ apiKey });
-    }
-    return this.ai;
-  }
-
-  async getRepairAdvice(problem: string) {
+  /**
+   * Generates repair advice using the Gemini model.
+   * Following @google/genai guidelines:
+   * 1. API key is used directly from process.env.API_KEY.
+   * 2. A new instance of GoogleGenAI is created right before making the API call.
+   */
+  // Renamed from getRepairAdvice to getAdvice to fix the error in App.tsx
+  async getAdvice(problem: string) {
     try {
-      const ai = this.initAI();
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: `أنت "المساعد الذكي" لمكتب "كلاسك فون" (Klask Phone) بإدارة أحمد النعيمي في بعقوبة، حي المعلمين.
